@@ -1,0 +1,14 @@
+- Print Report
+- Modul Pengguna
+	- Semak Keberkesanan Tindakan
+- Modul Urusetia
+	- Tetapan Keberkesanan Tindakan
+	- Tambah Daftar Risiko Baharu
+	- Tetapan Daftar Risiko (Button-button Tindakan Sahaja)
+- Modul JK Risiko
+	- Pengesahan Keberkesanan Tindakan
+	- Pengesahan Konteks Organisasi (Button-button Tindakan Sahaja)
+	- Pengesahan Daftar Risiko (Button-button Tindakan Sahaja)
+	- Sejarah Keberkesanan Tindakan
+	- Sejarah Konteks Organisasi (Button-button Tindakan Sahaja)
+	- Sejarah Daftar Risiko (Button-button Tindakan Sahaja)
