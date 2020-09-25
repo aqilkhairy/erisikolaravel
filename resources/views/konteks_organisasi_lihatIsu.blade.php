@@ -67,8 +67,8 @@
                         <td rowspan="{{ $rowspan }}">{{ $isuluaran->perkara }}</td>
                         @endif
                         <?php $currentrow++; ?>
-                        <td>{{ $isuluaran->isu }}</td>
-                        <td>{{ $isuluaran->kesan }}</td>
+                        <td>{!! $isuluaran->isu !!}</td>
+                        <td>{!! $isuluaran->kesan !!}</td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -108,8 +108,8 @@
                         <td rowspan="{{ $rowspan }}">{{ $isudalaman->perkara }}</td>
                         @endif
                         <?php $currentrow++; ?>
-                        <td>{{ $isudalaman->isu }}</td>
-                        <td>{{ $isudalaman->kesan }}</td>
+                        <td>{!! $isudalaman->isu !!}</td>
+                        <td>{!! $isudalaman->kesan !!}</td>
                     </tr>
                 @endforeach
                 </tbody>

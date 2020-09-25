@@ -18,6 +18,8 @@
 @stop
 
 @section('adminlte_css')
+<!-- include summernote css/js -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"></script>
 <style>
     .card.maximized-card .card-body {
@@ -167,9 +169,13 @@
     <!-- ./wrapper -->
 @stop
 
+@yield('before_js')
+
 @section('adminlte_js')
     <script>document.getElementById("@yield('sidebar_item')").classList.add("active");</script>
     <script>document.getElementById("@yield('sidebar_tree_item')").classList.add("menu-open");</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     @yield('script')
 @stop

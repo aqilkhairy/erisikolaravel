@@ -25,7 +25,7 @@
         <h3 class="widget-user-username">{{Auth::user()->name}}</h3>
         <h5 class="widget-user-desc">{{Auth::user()->user_type}}</h5>
       </div>
-      
+
       <div class="card-footer">
         <ul class="nav flex-column">
           <li class="nav-item pt-2" style="display: table-cell;vertical-align: middle;">
@@ -81,7 +81,7 @@
           <div class="col-7 col-sm-9">
             <div class="tab-content" id="vert-tabs-tabContent">
               <div class="tab-pane fade" id="vert-tabs-keberkesanan-tindakan">
-                  
+
               </div>
               <div class="tab-pane fade  active show" id="vert-tabs-konteks-organisasi">
                   <table class="table table-sm">
@@ -112,7 +112,7 @@
                 </table>
               </div>
               <div class="tab-pane fade" id="vert-tabs-daftar-risiko">
-                  
+
               </div>
             </div>
           </div>
@@ -124,35 +124,68 @@
   </div>
   <!-- /.col -->
 </div>
+@endcan
 <div class="row">
-    <div class="col-12 col-sm-6">
+    <div class="col">
         <div class="card card-success">
           <div class="card-header">
-            <h3 class="card-title">Senarai Tahap Risiko (Keluaran {{ $daftarRisikoTerkini->kod_keluaran }})</h3>
+            <h3 class="card-title">Carta Tahap Risiko (Keluaran {{ $daftarRisikoTerkini->kod_keluaran }})</h3>
           </div>
           <div class="card-body">
-              <canvas id="grafTahapRisiko" style="width: 300px; height: 300px;"></canvas>
-          </div>
-        </div>
-    </div>
-    <div class="col-12 col-sm-6">
-        <div class="card card-success">
-          <div class="card-header">
-            <h3 class="card-title">Peratus Tindakan Terhadap Risiko (Keluaran {{ $daftarRisikoTerkini->kod_keluaran }})</h3>
-          </div>
-          <div class="card-body">
-              <canvas id="" style="width: 300px; height: 300px;"></canvas>
+              <div class="row">
+                  <div class="col-12 col-sm-6">
+                    <canvas id="grafTahapRisiko" style="width: 300px; height: 300px;"></canvas>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <canvas id="grafTahapRisikoBar" style="width: 300px; height: 300px;"></canvas>
+                  </div>
+              </div>
           </div>
         </div>
     </div>
 </div>
-@endcan
+<div class="row">
+    <div class="col">
+        <div class="card card-success">
+          <div class="card-header">
+            <h3 class="card-title">Carta Tahap Risiko Mengikut Tahap (Keluaran {{ $daftarRisikoTerkini->kod_keluaran }})</h3>
+          </div>
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-12 col-sm-6">
+                      <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab2" role="tablist" aria-orientation="vertical">
+                          <a class="nav-link active" id="tab-rendah" data-toggle="pill" href="#tabs-rendah" aria-selected="true">Rendah (1-4)</a>
+                          <a class="nav-link" id="tab-sederhana" data-toggle="pill" href="#tabs-sederhana" aria-selected="false">Sederhana (5-9)</a>
+                          <a class="nav-link" id="tab-tinggi" data-toggle="pill" href="#tabs-tinggi" aria-selected="false">Tinggi (10-14)</a>
+                          <a class="nav-link" id="tab-sangattinggi" data-toggle="pill" href="#tabs-sangattinggi" aria-selected="false">Sangat Tinggi (15-25)</a>
+                      </div>
+                  </div><div class="col-12 col-sm-6">
+                      <div class="tab-content" id="vert-tabs-tabContent2">
+                          <div class="tab-pane text-left fade active show" id="tabs-rendah">
+                              <canvas id="grafRendah" style="width: 300px; height: 300px;"></canvas>
+                          </div>
+                          <div class="tab-pane text-left fade " id="tabs-sederhana">
+                              <canvas id="grafSederhana" style="width: 300px; height: 300px;"></canvas>
+                          </div>
+                          <div class="tab-pane text-left fade " id="tabs-tinggi">
+                              <canvas id="grafTinggi" style="width: 300px; height: 300px;"></canvas>
+                          </div>
+                          <div class="tab-pane text-left fade " id="tabs-sangattinggi">
+                              <canvas id="grafSangatTinggi" style="width: 300px; height: 300px;"></canvas>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+          </div>
+        </div>
+    </div>
+</div>
 </section>
 @stop
 
 @section('script')
 <script>
-$(document).ready(function() { 
+$(document).ready(function() {
     var rendah = 0, sederhana = 0, tinggi = 0, sangattinggi = 0;
     @foreach($tahapArray as $tahap)
         @if($tahap->tahap <= 4)
@@ -165,14 +198,15 @@ $(document).ready(function() {
             sangattinggi++;
         @endif
     @endforeach
-    
-    var ctx = document.getElementById('grafTahapRisiko');
+
+    var ctxTahapRisiko = document.getElementById('grafTahapRisiko');
+    var ctxTahapRisikoBar = document.getElementById('grafTahapRisikoBar');
     var donutData        = {
       labels: [
-          'Rendah (1-4)', 
+          'Rendah (1-4)',
           'Sederhana (5-9)',
-          'Tinggi (10-14)', 
-          'Sangat Tinggi (15-25)', 
+          'Tinggi (10-14)',
+          'Sangat Tinggi (15-25)',
       ],
       datasets: [
         {
@@ -186,12 +220,152 @@ $(document).ready(function() {
       maintainAspectRatio : false,
       responsive : true,
     }
-    var pieChart = new Chart(ctx, {
+    var pieChart = new Chart(ctxTahapRisiko, {
       type: 'pie',
       data: pieData,
-      options: pieOptions      
+      options: pieOptions
+    });
+    var barOptions = {
+            scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                      }
+                  }]
+              },
+              legend: {
+                  display: false
+                    }
+        }
+    var barChart = new Chart(ctxTahapRisikoBar, {
+        type: 'bar',
+        data: pieData,
+        options: barOptions
     })
+
+<?php
+    $tahapRisikoArray = [];
+    foreach($borangDaftarRisikoArray as $borangDaftarRisiko) {
+        $data = [];
+        $daftarRisikoArray = DB::select("SELECT (a.kebarangkalian*a.impak) AS tahap, b.kod_keluaran  FROM daftarrisiko a JOIN borangdaftarrisiko b ON a.borangdaftarrisiko_id = b.id WHERE borangdaftarrisiko_id = $borangDaftarRisiko->id");
+        $data['rendah'] = 0;
+        $data['sederhana'] = 0;
+        $data['tinggi'] = 0;
+        $data['sangattinggi'] = 0;
+        foreach($daftarRisikoArray as $tahapRisiko) {
+            $data['kod_keluaran'] = 'Keluaran '.$tahapRisiko->kod_keluaran;
+            if($tahapRisiko->tahap <= 4)
+                $data['rendah']++;
+            else if($tahapRisiko->tahap <= 9)
+                $data['sederhana']++;
+            else if($tahapRisiko->tahap <= 14)
+                $data['tinggi']++;
+            else
+                $data['sangattinggi']++;
+        }
+        $tahapRisikoArray[] = $data;
+    }
+?>
+
+    var grafRendah = document.getElementById('grafRendah');
+    var grafSederhana = document.getElementById('grafSederhana');
+    var grafTinggi = document.getElementById('grafTinggi');
+    var grafSangatTinggi = document.getElementById('grafSangatTinggi');
+
+    var rendahData        = {
+      labels: [
+          @foreach($tahapRisikoArray as $r)
+            '{{ $r["kod_keluaran"] }}',
+          @endforeach
+      ],
+      datasets: [
+        {
+          data: [
+              @foreach($tahapRisikoArray as $r)
+                {{ $r['rendah'] }},
+              @endforeach
+          ],
+          backgroundColor : '#28a745',
+        }
+      ]
+    }
+
+    var sederhanaData        = {
+      labels: [
+          @foreach($tahapRisikoArray as $r)
+            '{{ $r["kod_keluaran"] }}',
+          @endforeach
+      ],
+      datasets: [
+        {
+          data: [
+              @foreach($tahapRisikoArray as $r)
+                {{ $r['sederhana'] }},
+              @endforeach
+          ],
+          backgroundColor : '#ffc107',
+        }
+      ]
+    }
+
+    var tinggiData        = {
+      labels: [
+          @foreach($tahapRisikoArray as $r)
+            '{{ $r["kod_keluaran"] }}',
+          @endforeach
+      ],
+      datasets: [
+        {
+          data: [
+              @foreach($tahapRisikoArray as $r)
+                {{ $r['tinggi'] }},
+              @endforeach
+          ],
+          backgroundColor : '#ff851b',
+        }
+      ]
+    }
+
+    var sangattinggiData        = {
+      labels: [
+          @foreach($tahapRisikoArray as $r)
+            '{{ $r["kod_keluaran"] }}',
+          @endforeach
+      ],
+      datasets: [
+        {
+          data: [
+              @foreach($tahapRisikoArray as $r)
+                {{ $r['sangattinggi'] }},
+              @endforeach
+          ],
+          backgroundColor : '#dc3545',
+        }
+      ]
+    }
+
+    var barChartRendah = new Chart(grafRendah, {
+        type: 'bar',
+        data: rendahData,
+        options: barOptions
+    });
+    var barChartSederhana = new Chart(grafSederhana, {
+        type: 'bar',
+        data: sederhanaData,
+        options: barOptions
+    });
+    var barChartTinggi = new Chart(grafTinggi, {
+        type: 'bar',
+        data: tinggiData,
+        options: barOptions
+    });
+    var barChartSangatTinggi = new Chart(grafSangatTinggi, {
+        type: 'bar',
+        data: sangattinggiData,
+        options: barOptions
+    });
 });
+
 </script>
 @stop
 

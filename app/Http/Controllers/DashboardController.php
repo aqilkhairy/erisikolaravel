@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth; 
@@ -27,13 +27,16 @@ class DashboardController extends Controller
         
         $tahapArray = DB::select("SELECT (a.kebarangkalian*a.impak) AS tahap FROM daftarrisiko a JOIN borangdaftarrisiko b ON a.borangdaftarrisiko_id = b.id WHERE terkini = 1");
         
+        $borangDaftarRisikoArray = DB::select("SELECT * FROM borangdaftarrisiko WHERE tarikh_dikemaskini IS NOT NULL");
+        
         return view('dashboard', [
             'isu'=>$isuTerkini[0],
             'pihak'=>$pihakTerkini[0],
             'dokumenSemakArray'=>$dokumenSemakArray,
             'countSemak'=>$countSemak,
             'daftarRisikoTerkini'=>$daftarRisikoTerkini,
-            'tahapArray'=>$tahapArray
+            'tahapArray'=>$tahapArray,
+            'borangDaftarRisikoArray'=>$borangDaftarRisikoArray
         ]);
 
     }

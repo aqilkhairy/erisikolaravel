@@ -77,7 +77,7 @@
                     } else { //sedang
                         $statusSemakan = "<p class='badge bg-warning'>UNTUK DISEMAK OLEH PENGGUNA</p>";
                         $tindakanSemakan = "
-                            <a href='#' class='btn badge bg-warning' style='width:120px'><i class='fas fa-edit'></i>Semak</a>
+                            <a href='/konteks_organisasi/semak/$isu->id' class='btn badge bg-warning' style='width:120px'><i class='fas fa-edit'></i>Semak</a>
                             <a href='/konteks_organisasi/lihat/$isu->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i>Lihat</a>
                         ";
                     }
@@ -132,7 +132,7 @@
                     } else { //sedang
                         $statusSemakan = "<p class='badge bg-warning'>UNTUK DISEMAK OLEH PENGGUNA</p>";
                         $tindakanSemakan = "
-                            <a href='#' class='btn badge bg-warning' style='width:120px'><i class='fas fa-edit'></i>Semak</a>
+                            <a href='/konteks_organisasi/semak/$pihak->id' class='btn badge bg-warning' style='width:120px'><i class='fas fa-edit'></i>Semak</a>
                             <a href='/konteks_organisasi/lihat/$pihak->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i>Lihat</a>
                         ";
                     }

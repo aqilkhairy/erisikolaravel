@@ -28,14 +28,14 @@ class AuthServiceProvider extends ServiceProvider
 
         //JK Risiko
         $gate->define('isJK', function($user) {
-            return $user->user_type == 'JAWATANKUASA RISIKO';
+            return $user->user_type == 'JK';
         });
-        
+
         //Urusetia
         $gate->define('isUrusetia', function($user) {
             return $user->user_type == 'URUSETIA';
         });
-        
+
         //Pengguna
         $gate->define('isPengguna', function($user) {
             return $user->user_type == 'PENGGUNA';

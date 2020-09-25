@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-sm-11">
                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
-                  <li class="pt-2 px-3"><h3 class="card-title">Senarai Tetapan Konteks Organisasi</h3></li>
+                  <li class="pt-2 px-3"><h3 class="card-title">Tetapan Konteks Organisasi</h3></li>
                   <li class="nav-item">
                     <a class="nav-link active" id="custom-tabs-two-home-tab" data-toggle="pill" href="#tab-isu" aria-selected="true">Dokumen Isu</a>
                   </li>
@@ -37,9 +37,9 @@
           </div>
     </div>
     <div class="card-body pt-0">
+        <button id="tambahIsu" class="btn btn-block btn-flat bg-olive mb-2 mt-2" data-toggle="modal" data-target="#tambahModal"><i class="fas fa-plus"></i> Tambah Keluaran Konteks Organisasi Baharu</button>
         <div class="tab-content" id="custom-tabs-two-tabContent">
             <div class="tab-pane fade active show" id="tab-isu">
-            <button id="tambahIsu" class="btn btn-block btn-flat bg-olive mb-2 mt-2" data-toggle="modal" data-target="#tambahModal"><i class="fas fa-plus"></i> Tambah Keluaran Baharu</button>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -69,9 +69,9 @@
                         $statusSemakan = "<p class='badge bg-secondary'>TEMPOH SEMAKAN BELUM BERMULA</p>";
                         $tindakanSemakan = "
                             <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</button>
-                            <a href='#' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</a>
-                            <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-trash'></i> Hapus Ke Sejarah</a>
-                            <a href='konteks_organisasi_lihat/$isu->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
+                            <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
+                            <button data-toggle='modal' data-target='#ubahTarikh' data-mula='$mula' data-akhir='$akhir' data-id='$isu->id' data-keluaran='$isu->kod_keluaran' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
+                            <a href='/konteks_organisasi/lihat/$isu->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
                         ";
                     } else if(date("Y-m-d") > $akhir) { //telah tamat, disabled btn semak
                         if($tarikhSah == NULL) {
@@ -79,35 +79,35 @@
                                     $statusSemakan = "<p class='badge badge bg-success'>TEMPOH SEMAKAN TELAH SELESAI</p>";
                                     $tindakanSemakan = "
                                         <a href='#' class='btn badge bg-info' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</a>
-                                        <a href='#' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</a>
-                                        <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-trash'></i> Hapus Ke Sejarah</a>
-                                        <a href='konteks_organisasi_lihat/$isu->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
-                                    ";  
+                                        <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
+                                        <button data-toggle='modal' data-target='#ubahTarikh' data-mula='$mula' data-akhir='$akhir' data-id='$isu->id' data-keluaran='$isu->kod_keluaran' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
+                                        <a href='/konteks_organisasi/lihat/$isu->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
+                                    ";
                                 } else { // telah dihantar ke jk
                                     $statusSemakan = "<p class='badge badge bg-orange'>SEDANG DILULUSKAN JK RISIKO</p>";
                                     $tindakanSemakan = "
                                         <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</button>
+                                        <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</button>
                                         <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
-                                        <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-trash'></i> Hapus Ke Sejarah</button>
-                                        <a href='konteks_organisasi_lihat/$isu->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
-                                    ";  
+                                        <a href='/konteks_organisasi/lihat/$isu->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
+                                    ";
                                 }
                         } else { // telah disahkan jk
                             $statusSemakan = "<p class='badge badge bg-lime'>TELAH DISAHKAN JK RISIKO</p>";
                             $tindakanSemakan = "
                                 <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</button>
+                                <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
                                 <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
-                                <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-trash'></i> Hapus Ke Sejarah</a>
-                                <a href='konteks_organisasi_lihat/$isu->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
-                            ";  
+                                <a href='/konteks_organisasi/lihat/$isu->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
+                            ";
                         }
                     } else { //sedang
                         $statusSemakan = "<p class='badge bg-warning'>UNTUK DISEMAK OLEH PENGGUNA</p>";
                         $tindakanSemakan = "
                             <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</button>
-                            <a href='#' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</a>
-                            <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-trash'></i> Hapus Ke Sejarah</button>
-                            <a href='konteks_organisasi_lihat/$isu->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
+                            <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</button>
+                            <button data-toggle='modal' data-target='#ubahTarikh' data-mula='$mula' data-akhir='$akhir' data-id='$isu->id' data-keluaran='$isu->kod_keluaran' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
+                            <a href='/konteks_organisasi/lihat/$isu->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
                         ";
                     }
                     ?>
@@ -123,7 +123,7 @@
             </table>
         </div>
         <div class="tab-pane fade" id="tab-pihak">
-            <button id="tambahIsu" class="btn btn-block btn-flat bg-olive mb-2 mt-2" data-toggle="modal" data-target="#tambahModal"><i class="fas fa-plus"></i> Tambah Keluaran Baharu</button>
+
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -153,9 +153,9 @@
                         $statusSemakan = "<p class='badge bg-secondary'>TEMPOH SEMAKAN BELUM BERMULA</p>";
                         $tindakanSemakan = "
                             <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</button>
-                            <a href='#' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</a>
-                            <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-trash'></i> Hapus Ke Sejarah</a>
-                            <a href='konteks_organisasi_lihat/$pihak->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
+                            <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
+                            <button data-toggle='modal' data-target='#ubahTarikh' data-mula='$mula' data-akhir='$akhir' data-id='$pihak->id' data-keluaran='$pihak->kod_keluaran' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
+                            <a href='/konteks_organisasi/lihat/$pihak->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
                         ";
                     } else if(date("Y-m-d") > $akhir) { //telah tamat, disabled btn semak
                         if($tarikhSah == NULL) {
@@ -163,35 +163,35 @@
                                     $statusSemakan = "<p class='badge badge bg-success'>TEMPOH SEMAKAN TELAH SELESAI</p>";
                                     $tindakanSemakan = "
                                         <a href='#' class='btn badge bg-info' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</a>
-                                        <a href='#' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</a>
-                                        <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-trash'></i> Hapus Ke Sejarah</a>
-                                        <a href='konteks_organisasi_lihat/$pihak->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
-                                    ";  
+                                        <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
+                                        <button data-toggle='modal' data-target='#ubahTarikh' data-mula='$mula' data-akhir='$akhir' data-id='$pihak->id' data-keluaran='$pihak->kod_keluaran' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
+                                        <a href='/konteks_organisasi/lihat/$pihak->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
+                                    ";
                                 } else { // telah dihantar ke jk
                                     $statusSemakan = "<p class='badge badge bg-orange'>SEDANG DILULUSKAN JK RISIKO</p>";
                                     $tindakanSemakan = "
                                         <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</button>
+                                        <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</button>
                                         <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
-                                        <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-trash'></i> Hapus Ke Sejarah</button>
-                                        <a href='konteks_organisasi_lihat/$pihak->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
-                                    ";  
+                                        <a href='/konteks_organisasi/lihat/$pihak->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
+                                    ";
                                 }
                         } else { // telah disahkan jk
                             $statusSemakan = "<p class='badge badge bg-lime'>TELAH DISAHKAN JK RISIKO</p>";
                             $tindakanSemakan = "
                                 <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</button>
+                                <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
                                 <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
-                                <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-trash'></i> Hapus Ke Sejarah</a>
-                                <a href='konteks_organisasi_lihat/$pihak->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
-                            ";  
+                                <a href='/konteks_organisasi/lihat/$pihak->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
+                            ";
                         }
                     } else { //sedang
                         $statusSemakan = "<p class='badge bg-warning'>UNTUK DISEMAK OLEH PENGGUNA</p>";
                         $tindakanSemakan = "
                             <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</button>
-                            <a href='#' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</a>
-                            <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-trash'></i> Hapus Ke Sejarah</button>
-                            <a href='konteks_organisasi_lihat/$pihak->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
+                            <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</button>
+                            <button data-toggle='modal' data-target='#ubahTarikh' data-mula='$mula' data-akhir='$akhir' data-id='$pihak->id' data-keluaran='$pihak->kod_keluaran' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
+                            <a href='/konteks_organisasi/lihat/$pihak->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
                         ";
                     }
                     ?>
@@ -222,9 +222,9 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Tambah Keluaran Isu Baharu</h4>
+        <h4 class="modal-title">Tambah Keluaran Konteks Organisasi Baharu</h4>
       </div>
-      <form id="formTambah" method="post" action="/tambah">
+      <form id="formTambah" method="get" action="/konteks_organisasi/tambah">
       <div class="modal-body">
           <div class="form-group">
             <label for="bilangan">Bilangan: </label>
@@ -233,22 +233,60 @@
             <input required class="form-control" type="date" id="bermula" name="bermula">
             <label for="tarikhAkhir">Tarikh Semakan Berakhir: </label>
             <input required class="form-control" type="date" id="berakhir" name="berakhir">
-          </div> 
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>
         <button type="button" class="btn btn-primary btnTambah">Tambah</button>
-      </div>   
+      </div>
       </form>
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="ubahTarikh">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Ubah Tarikh Semakan Konteks Organisasi</h4>
+        </div>
+        <form id="formUbahTarikh" method="get" action="/konteks_organisasi/ubahtarikh">
+        <div class="modal-body">
+            <div class="form-group">
+              <label for="bilangan">Bilangan: </label>
+              <input hidden type="text" id="id" name="id">
+              <input disabled class="form-control" type="text" id="bilangan" name="bilangan">
+              <label for="tarikhAwal">Tarikh Semakan Bermula: </label>
+              <input required class="form-control" type="date" id="bermula" name="bermula">
+              <label for="tarikhAkhir">Tarikh Semakan Berakhir: </label>
+              <input required class="form-control" type="date" id="berakhir" name="berakhir">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>
+          <button type="button" class="btn btn-primary btnUbahTarikh" value='Simpan'>Simpan</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
 @stop
 
 @section('script')
 <!--- JS SCRIPT --->
 <script>
     $(document).ready(function() {
+        $('.btnUbahTarikh').click(function() {
+            Swal.fire({
+                title: 'Berjaya!',
+                text: "Tarikh semakan sudah diperbaharui.",
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Selesai'
+            }).then((result) => {
+                $("#formUbahTarikh").submit();
+            })
+        })
         $('.btnTambah').click(function() {
             Swal.fire({
               title: 'Anda pasti ingin menambah keluaran baharu?',
@@ -268,7 +306,7 @@
                       'success'
                     ).then(function () {
                         $("#formTambah").submit();
-                    })                   
+                    })
                 } else {
                     Swal.fire(
                       'Gagal!',
@@ -278,6 +316,14 @@
                 }
               }
             })
+        })
+
+        $('#ubahTarikh').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            $('#ubahTarikh #id').val(button.data('id'));
+            $('#ubahTarikh #bilangan').val(button.data('keluaran'));
+            $('#ubahTarikh #bermula').val(button.data('mula'));
+            $('#ubahTarikh #berakhir').val(button.data('akhir'));
         })
     })
 </script>

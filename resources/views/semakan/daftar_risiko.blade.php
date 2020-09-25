@@ -46,20 +46,17 @@
                     if(date("Y-m-d") < $mula) { //belum bermula, disabled btn semak & lihat
                         $statusSemakan = "<p class='badge bg-secondary'>TEMPOH SEMAKAN BELUM BERMULA</p>";
                         $tindakanSemakan = "
-                            <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-edit'></i>Semak</button>
-                            <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-search'></i>Lihat</button>
+                            <button disabled class='btn  bg-secondary' style='width:120px'><i class='fas fa-edit'></i>Semak</button>
                         ";
                     } else if(date("Y-m-d") > $akhir) { //telah tamat, disabled btn semak
                         $statusSemakan = "<p class='badge badge bg-success'>TEMPOH SEMAKAN TELAH SELESAI</p>";
                         $tindakanSemakan = "
-                            <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-edit'></i>Semak</button>
-                            <a href='daftar_risiko/lihat/$data->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i>Lihat</a>
+                            <button disabled class='btn  bg-secondary' style='width:120px'><i class='fas fa-edit'></i>Semak</button>
                         ";
                     } else { //sedang
                         $statusSemakan = "<p class='badge bg-warning'>UNTUK DISEMAK OLEH PENGGUNA</p>";
                         $tindakanSemakan = "
-                            <a href='#' class='btn badge bg-warning' style='width:120px'><i class='fas fa-edit'></i>Semak</a>
-                            <a href='daftar_risiko/lihat/$data->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i>Lihat</a>
+                            <a href='semakan/$data->id' class='btn  bg-warning' style='width:120px'><i class='fas fa-edit'></i>Semak</a>
                         ";
                     }
                     ?>

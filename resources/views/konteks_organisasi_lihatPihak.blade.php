@@ -67,8 +67,8 @@
                         <td rowspan="{{ $rowspan }}">{{ $pihakluaran->pihak_berkepentingan }}</td>
                         @endif
                         <?php $currentrow++; ?>
-                        <td>{{ $pihakluaran->peranan }}</td>
-                        <td>{{ $pihakluaran->keperluan }}</td>
+                        <td>{!! $pihakluaran->peranan !!}</td>
+                        <td>{!! $pihakluaran->keperluan !!}</td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -108,8 +108,8 @@
                         <td rowspan="{{ $rowspan }}">{{ $pihakdalaman->pihak_berkepentingan }}</td>
                         @endif
                         <?php $currentrow++; ?>
-                        <td>{{ $pihakdalaman->peranan }}</td>
-                        <td>{{ $pihakdalaman->keperluan }}</td>
+                        <td>{!! $pihakdalaman->peranan !!}</td>
+                        <td>{!! $pihakdalaman->keperluan !!}</td>
                     </tr>
                 @endforeach
                 </tbody>
