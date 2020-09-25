@@ -111,7 +111,7 @@
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="logout">Log Keluar</a>
+            <a class="nav-link" href="/logout">Log Keluar</a>
           </li>
         </ul>
       </nav>

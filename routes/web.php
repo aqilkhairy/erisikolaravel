@@ -43,26 +43,41 @@ Route::get('/redirect', 'Auth\LoginController@redirectToProvider');
 Route::get('/callback', 'Auth\LoginController@handleProviderCallback');
 
 Route::middleware(['pengguna'])->group(function() {
-    Route::get('konteks_organisasi/semakan', 'KonteksOrganisasiController@senaraisemakan');
-    Route::get('konteks_organisasi/semak/{id}', 'KonteksOrganisasiController@semak')->name('semakKonteksOrganisasi');
-    Route::get('konteks_organisasi/semak/{id}/selesai', 'KonteksOrganisasiController@semakBaru');
-    Route::get('daftar_risiko/semakan/{id}', 'BDRJController@senaraisemakanborang');
-    Route::get('daftar_risiko/semakan/{id}/{daftarrisikoid}', 'BDRJController@semak')->name('semakBDRJ');
-    Route::get('daftar_risiko/semakan/{id}/{daftarrisikoid}/selesai', 'BDRJController@semakBaru')->name('hantarSemakBDRJ');
+    Route::prefix('konteks_organisasi')->group(function () {
+        Route::get('semakan', 'KonteksOrganisasiController@senaraisemakan');
+        Route::get('semak/{id}', 'KonteksOrganisasiController@semak')->name('semakKonteksOrganisasi');
+        Route::get('semak/{id}/selesai', 'KonteksOrganisasiController@semakBaru');
+    });
+    Route::prefix('daftar_risiko')->group(function () {
+        Route::get('semakan/{id}', 'BDRJController@senaraisemakanborang');
+        Route::get('semakan/{id}/{daftarrisikoid}', 'BDRJController@semak')->name('semakBDRJ');
+        Route::get('semakan/{id}/{daftarrisikoid}/selesai', 'BDRJController@semakBaru')->name('hantarSemakBDRJ');
+    });
 });
 
 Route::middleware(['urusetia'])->group(function() {
-    Route::get('konteks_organisasi/tetapan', 'KonteksOrganisasiController@senaraitetapan');
-    Route::get('konteks_organisasi/tambah', 'KonteksOrganisasiController@tambah');
-    Route::get('konteks_organisasi/ubahtarikh', 'KonteksOrganisasiController@ubahtarikh');
-    Route::get('daftar_risiko/tetapan', 'BDRJController@senaraitetapan');
+    Route::prefix('konteks_organisasi')->group(function () {
+        Route::get('tetapan', 'KonteksOrganisasiController@senaraitetapan')->name('tetapanKonteks');
+        Route::get('tambahIsu', 'KonteksOrganisasiController@tambahIsu');
+        Route::get('tambahPihak', 'KonteksOrganisasiController@tambahPihak');
+        Route::get('ubahtarikh', 'KonteksOrganisasiController@ubahtarikh');
+        Route::get('hantar/{id}', 'KonteksOrganisasiController@hantar');
+        Route::get('sejarah/{id}', 'KonteksOrganisasiController@sejarah');
+    });
+    Route::prefix('daftar_risiko')->group(function () {
+        Route::get('tetapan', 'BDRJController@senaraitetapan');
+    });
 });
 
 Route::middleware(['jk'])->group(function() {
-    Route::get('konteks_organisasi/pengesahan', 'KonteksOrganisasiController@senaraipengesahan');
-    Route::get('daftar_risiko/pengesahan', 'BDRJController@senaraipengesahan');
-    Route::get('konteks_organisasi/sejarah', 'KonteksOrganisasiController@senaraisejarah');
-    Route::get('daftar_risiko/sejarah', 'BDRJController@senaraisejarah');
+    Route::prefix('konteks_organisasi')->group(function () {
+        Route::get('pengesahan', 'KonteksOrganisasiController@senaraipengesahan');
+        Route::get('sejarah', 'KonteksOrganisasiController@senaraisejarah');
+    });
+    Route::prefix('daftar_risiko')->group(function () {
+        Route::get('pengesahan', 'BDRJController@senaraipengesahan');
+        Route::get('sejarah', 'BDRJController@senaraisejarah');
+    });
 });
 
 Route::get('test', 'TestControl@index');

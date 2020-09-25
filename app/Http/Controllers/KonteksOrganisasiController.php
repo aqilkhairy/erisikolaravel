@@ -15,8 +15,18 @@ class KonteksOrganisasiController extends Controller
 
 
     public function index() {
-        $isuTerkiniArray = DB::select('SELECT * FROM konteks_organisasi WHERE dokumen = "isu" AND tarikh_disahkan IS NOT NULL AND sejarah = 0 ORDER BY tarikh_disahkan DESC LIMIT 1');
-        $pihakberkepentinganTerkiniArray  = DB::select('SELECT * FROM konteks_organisasi WHERE dokumen = "pihakberkepentingan" AND tarikh_disahkan IS NOT NULL AND sejarah = 0 ORDER BY tarikh_disahkan DESC LIMIT 1');
+        $isuTerkiniArray = DB::table('konteks_organisasi')
+                                ->where('dokumen', 'isu')
+                                ->whereNotNull('tarikh_disahkan')
+                                ->where('sejarah', 0)
+                                ->orderByDesc('tarikh_disahkan')
+                                ->limit(1)->get();
+        $pihakberkepentinganTerkiniArray  = DB::table('konteks_organisasi')
+                                                ->where('dokumen', 'pihakberkepentingan')
+                                                ->whereNotNull('tarikh_disahkan')
+                                                ->where('sejarah', 0)
+                                                ->orderByDesc('tarikh_disahkan')
+                                                ->limit(1)->get();
         $idIsu = null;
         $idPihak = null;
         $isuTerkini = null;
@@ -24,11 +34,26 @@ class KonteksOrganisasiController extends Controller
         foreach($isuTerkiniArray as $isuTerkini) { $idIsu = $isuTerkini->id; break; }
         foreach($pihakberkepentinganTerkiniArray as $pihakberkepentinganTerkini) { $idPihak = $pihakberkepentinganTerkini->id; break; }
 
-        $isuluaranArray = DB::select('SELECT * FROM isu WHERE id_konteks_organisasi = '.$idIsu.' AND jenis = 1 ORDER BY perkara');
-        $isudalamanArray = DB::select('SELECT * FROM isu WHERE id_konteks_organisasi = '.$idIsu.' AND jenis = 0 ORDER BY perkara');
-        $pihakberkepentinganluaranArray = DB::select('SELECT * FROM pihak_berkepentingan WHERE id_konteks_organisasi = '.$idPihak.' AND jenis = 1 ORDER BY pihak_berkepentingan');
-        $pihakberkepentingandalamanArray = DB::select('SELECT * FROM pihak_berkepentingan WHERE id_konteks_organisasi = '.$idPihak.' AND jenis = 0 ORDER BY pihak_berkepentingan');
-
+        $isuluaranArray = DB::table('isu')
+                            ->where('id_konteks_organisasi', $idIsu)
+                            ->where('jenis', 1)
+                            ->orderBy('perkara')
+                            ->get();
+        $isudalamanArray = DB::table('isu')
+                            ->where('id_konteks_organisasi', $idIsu)
+                            ->where('jenis', 0)
+                            ->orderBy('perkara')
+                            ->get();
+        $pihakberkepentinganluaranArray = DB::table('pihak_berkepentingan')
+                                            ->where('id_konteks_organisasi', $idPihak)
+                                            ->where('jenis', 1)
+                                            ->orderBy('pihak_berkepentingan')
+                                            ->get();
+        $pihakberkepentingandalamanArray = DB::table('pihak_berkepentingan')
+                                            ->where('id_konteks_organisasi', $idPihak)
+                                            ->where('jenis', 0)
+                                            ->orderBy('pihak_berkepentingan')
+                                            ->get();
         return view('konteks_organisasi',[
             'isuTerkini'=>$isuTerkini,
             'pihakberkepentinganTerkini'=>$pihakberkepentinganTerkini,
@@ -41,8 +66,16 @@ class KonteksOrganisasiController extends Controller
 
     public function senaraisemakan() {
 
-        $isuArray = DB::select('SELECT * FROM konteks_organisasi WHERE tarikh_disahkan IS NULL AND dokumen = "isu"  AND sejarah = 0');
-        $pihakArray = DB::select('SELECT * FROM konteks_organisasi WHERE tarikh_disahkan IS NULL AND dokumen = "pihakberkepentingan"  AND sejarah = 0');
+        $isuArray = DB::table('konteks_organisasi')
+                    ->whereNull('tarikh_disahkan')
+                    ->where('dokumen', 'isu')
+                    ->where('sejarah', 0)
+                    ->get();
+        $pihakArray = DB::table('konteks_organisasi')
+                    ->whereNull('tarikh_disahkan')
+                    ->where('dokumen', 'pihakberkepentingan')
+                    ->where('sejarah', 0)
+                    ->get();
         return view('semakan/konteks_organisasi', [
             'isuArray'=>$isuArray,
             'pihakArray'=>$pihakArray
@@ -51,8 +84,14 @@ class KonteksOrganisasiController extends Controller
 
     public function senaraitetapan() {
 
-        $isuArray = DB::select('SELECT * FROM konteks_organisasi WHERE dokumen = "isu" AND sejarah = 0');
-        $pihakArray = DB::select('SELECT * FROM konteks_organisasi WHERE dokumen = "pihakberkepentingan" AND sejarah = 0');
+        $isuArray = DB::table('konteks_organisasi')
+                    ->where('dokumen', 'isu')
+                    ->where('sejarah', 0)
+                    ->get();
+        $pihakArray = DB::table('konteks_organisasi')
+                    ->where('dokumen', 'pihakberkepentingan')
+                    ->where('sejarah', 0)
+                    ->get();
         return view('tetapan/konteks_organisasi', [
             'isuArray'=>$isuArray,
             'pihakArray'=>$pihakArray
@@ -60,8 +99,11 @@ class KonteksOrganisasiController extends Controller
     }
 
     public function senaraipengesahan() {
-
-        $dokumenArray = DB::select('SELECT * FROM konteks_organisasi WHERE tarikh_disahkan IS NULL AND status_hantar = 1  AND sejarah = 0');
+        $dokumenArray = DB::table('konteks_organisasi')
+                            ->whereNull('tarikh_disahkan')
+                            ->where('status_hantar', 1)
+                            ->where('sejarah', 0)
+                            ->get();
         return view('pengesahan/konteks_organisasi', [
             'dokumenArray'=>$dokumenArray
         ]);
@@ -69,8 +111,14 @@ class KonteksOrganisasiController extends Controller
 
     public function senaraisejarah() {
 
-        $isuArray = DB::select('SELECT * FROM konteks_organisasi WHERE dokumen = "isu" AND sejarah = 1');
-        $pihakArray = DB::select('SELECT * FROM konteks_organisasi WHERE dokumen = "pihakberkepentingan" AND sejarah = 1');
+        $isuArray = DB::table('konteks_organisasi')
+                        ->where('dokumen', 'isu')
+                        ->where('sejarah', 1)
+                        ->get();
+        $pihakArray = DB::table('konteks_organisasi')
+                        ->where('dokumen', 'pihakberkepentingan')
+                        ->where('sejarah', 1)
+                        ->get();
         return view('sejarah/konteks_organisasi', [
             'isuArray'=>$isuArray,
             'pihakArray'=>$pihakArray
@@ -78,13 +126,23 @@ class KonteksOrganisasiController extends Controller
     }
 
     public function lihat($id) {
-        $qryArray = DB::select('SELECT * FROM konteks_organisasi WHERE id = '.$id.'');
+        $qryArray = DB::table('konteks_organisasi')
+                        ->where('id', $id)
+                        ->get();
         foreach($qryArray as $qry) {
             if($qry->dokumen == "isu") {
                 $dokumen = "Dokumen Isu";
                 $konteks_organisasi = $qry;
-                $isuluaranArray = DB::select('SELECT * FROM isu WHERE id_konteks_organisasi = '.$id.' AND jenis = 1 ORDER BY perkara');
-                $isudalamanArray = DB::select('SELECT * FROM isu WHERE id_konteks_organisasi = '.$id.' AND jenis = 0 ORDER BY perkara');
+                $isuluaranArray = DB::table('isu')
+                                        ->where('id_konteks_organisasi', $id)
+                                        ->where('jenis', 1)
+                                        ->orderBy('perkara')
+                                        ->get();
+                $isudalamanArray = DB::table('isu')
+                                        ->where('id_konteks_organisasi', $id)
+                                        ->where('jenis', 0)
+                                        ->orderBy('perkara')
+                                        ->get();
                 return view('konteks_organisasi_lihatIsu',[
                     'dokumen'=>$dokumen,
                     'konteks_organisasi'=>$konteks_organisasi,
@@ -94,8 +152,16 @@ class KonteksOrganisasiController extends Controller
             } else {
                 $dokumen = "Dokumen Pihak Berkepentingan";
                 $konteks_organisasi = $qry;
-                $pihakberkepentinganluaranArray = DB::select('SELECT * FROM pihak_berkepentingan WHERE id_konteks_organisasi = '.$id.' AND jenis = 1 ORDER BY pihak_berkepentingan');
-                $pihakberkepentingandalamanArray = DB::select('SELECT * FROM pihak_berkepentingan WHERE id_konteks_organisasi = '.$id.' AND jenis = 0 ORDER BY pihak_berkepentingan');
+                $pihakberkepentinganluaranArray = DB::table('pihak_berkepentingan')
+                                                        ->where('id_konteks_organisasi', $id)
+                                                        ->where('jenis', 1)
+                                                        ->orderBy('pihak_berkepentingan')
+                                                        ->get();
+                $pihakberkepentingandalamanArray = DB::table('pihak_berkepentingan')
+                                                        ->where('id_konteks_organisasi', $id)
+                                                        ->where('jenis', 0)
+                                                        ->orderBy('pihak_berkepentingan')
+                                                        ->get();
                 return view('konteks_organisasi_lihatPihak',[
                     'dokumen'=>$dokumen,
                     'konteks_organisasi'=>$konteks_organisasi,
@@ -107,13 +173,23 @@ class KonteksOrganisasiController extends Controller
     }
 
     public function semak($id) {
-        $qryArray = DB::select('SELECT * FROM konteks_organisasi WHERE id = '.$id.'');
+        $qryArray = DB::table('konteks_organisasi')
+                        ->where('id', $id)
+                        ->get();
         foreach($qryArray as $qry) {
             if($qry->dokumen == "isu") {
                 $dokumen = "Dokumen Isu";
                 $konteks_organisasi = $qry;
-                $isuluaranArray = DB::select('SELECT * FROM isu WHERE id_konteks_organisasi = '.$id.' AND jenis = 1 ORDER BY perkara');
-                $isudalamanArray = DB::select('SELECT * FROM isu WHERE id_konteks_organisasi = '.$id.' AND jenis = 0 ORDER BY perkara');
+                $isuluaranArray = DB::table('isu')
+                                    ->where('id_konteks_organisasi', $id)
+                                    ->where('jenis', 1)
+                                    ->orderBy('perkara')
+                                    ->get();
+                $isudalamanArray = DB::table('isu')
+                                        ->where('id_konteks_organisasi', $id)
+                                        ->where('jenis', 0)
+                                        ->orderBy('perkara')
+                                        ->get();
                 $logArray = DB::table('log_semakan_konteks')
                                 ->where('konteks_organisasi_id', $id)->get();
                 return view('semakan/isu/semak',[
@@ -126,8 +202,16 @@ class KonteksOrganisasiController extends Controller
             } else {
                 $dokumen = "Dokumen Pihak Berkepentingan";
                 $konteks_organisasi = $qry;
-                $pihakberkepentinganluaranArray = DB::select('SELECT * FROM pihak_berkepentingan WHERE id_konteks_organisasi = '.$id.' AND jenis = 1 ORDER BY pihak_berkepentingan');
-                $pihakberkepentingandalamanArray = DB::select('SELECT * FROM pihak_berkepentingan WHERE id_konteks_organisasi = '.$id.' AND jenis = 0 ORDER BY pihak_berkepentingan');
+                $pihakberkepentinganluaranArray = DB::table('pihak_berkepentingan')
+                                                        ->where('id_konteks_organisasi', $id)
+                                                        ->where('jenis', 1)
+                                                        ->orderBy('pihak_berkepentingan')
+                                                        ->get();
+                $pihakberkepentingandalamanArray = DB::table('pihak_berkepentingan')
+                                                        ->where('id_konteks_organisasi', $id)
+                                                        ->where('jenis', 0)
+                                                        ->orderBy('pihak_berkepentingan')
+                                                        ->get();
                 $logArray = DB::table('log_semakan_konteks')
                                 ->where('konteks_organisasi_id', $id)->get();
                 return view('semakan/pihak/semak',[
@@ -153,18 +237,52 @@ class KonteksOrganisasiController extends Controller
         return redirect()->route('semakKonteksOrganisasi', ['id' => $id]);
     }
 
-    public function tambah(Request $request) {
-        $terkini = DB::select("SELECT * FROM konteks_organisasi WHERE dokumen = 'isu' AND tarikh_disahkan IS NOT NULL AND sejarah = 0 ORDER BY tarikh_disahkan DESC LIMIT 1");
+    public function tambahIsu(Request $request) {
+        $terkini = DB::table('konteks_organisasi')
+                        ->where('dokumen', 'isu')
+                        ->whereNotNull('tarikh_disahkan')
+                        ->where('sejarah', 0)
+                        ->orderByDesc('tarikh_disahkan')
+                        ->limit(1)
+                        ->get();
         foreach($terkini as $dokumenTerkini) { break; }
-        $isuArray = DB::select("SELECT * FROM isu WHERE id_konteks_organisasi = $dokumenTerkini->id");
-        $pihakArray = DB::select("SELECT * FROM pihak_berkepentingan WHERE id_konteks_organisasi = $dokumenTerkini->id");
+            $isuArray = DB::table('isu')
+                        ->where('id_konteks_organisasi', $dokumenTerkini->id)
+                        ->get();
+            DB::table('konteks_organisasi')->insert([
+                ['dokumen' => 'isu', 'kod_keluaran' => ''.$request->bilangan.'', 'tarikh_disahkan' => NULL, 'tarikh_disemak_bermula' => ''.$request->bermula.'', 'tarikh_disemak_berakhir' => ''.$request->berakhir.''],
+            ]);
+            $newDokumen = DB::getPdo()->lastInsertId();
+            foreach($isuArray as $isu) {
+                DB::table('isu')->insert([
+                    ['id_konteks_organisasi' => $newDokumen, 'perkara' => $isu->perkara, 'isu' => $isu->isu, 'kesan' => $isu->kesan, 'jenis' => $isu->jenis],
+                ]);
+            }
+        return redirect()->route('tetapanKonteks');
+    }
 
-        DB::table('konteks_organisasi')->insert([
-            ['dokumen' => 'isu', 'kod_keluaran' => ''.$request->bilangan.'', 'tarikh_disahkan' => NULL, 'tarikh_disemak_bermula' => ''.$request->bermula.'', 'tarikh_disemak_berakhir' => ''.$request->berakhir.''],
-            ['dokumen' => 'pihakberkepentingan', 'kod_keluaran' => ''.$request->bilangan.'', 'tarikh_disahkan' => NULL, 'tarikh_disemak_bermula' => ''.$request->bermula.'', 'tarikh_disemak_berakhir' => ''.$request->berakhir.'']
-        ]);
-
-
+    public function tambahPihak(Request $request) {
+        $terkini = DB::table('konteks_organisasi')
+                        ->where('dokumen', 'pihakberkepentingan')
+                        ->whereNotNull('tarikh_disahkan')
+                        ->where('sejarah', 0)
+                        ->orderByDesc('tarikh_disahkan')
+                        ->limit(1)
+                        ->get();
+        foreach($terkini as $dokumenTerkini) { break; }
+            $pihakArray = DB::table('pihak_berkepentingan')
+                            ->where('id_konteks_organisasi', $dokumenTerkini->id)
+                            ->get();
+            DB::table('konteks_organisasi')->insert([
+                ['dokumen' => 'pihakberkepentingan', 'kod_keluaran' => ''.$request->bilangan.'', 'tarikh_disahkan' => NULL, 'tarikh_disemak_bermula' => ''.$request->bermula.'', 'tarikh_disemak_berakhir' => ''.$request->berakhir.'']
+            ]);
+            $newDokumen = DB::getPdo()->lastInsertId();
+            foreach($pihakArray as $pihak) {
+                DB::table('pihak_berkepentingan')->insert([
+                    ['id_konteks_organisasi' => $newDokumen, 'pihak_berkepentingan' => $pihak->pihak_berkepentingan, 'peranan' => $pihak->peranan, 'keperluan' => $pihak->keperluan, 'jenis' => $pihak->jenis],
+                ]);
+            }
+            return redirect()->route('tetapanKonteks');
     }
 
     public function ubahtarikh(Request $request) {
@@ -174,6 +292,18 @@ class KonteksOrganisasiController extends Controller
         return redirect()->back();
     }
 
+    public function hantar($id) {
+        DB::table('konteks_organisasi')
+            ->where('id', $id)
+            ->update(['status_hantar' => 1]);
+        return redirect()->route('tetapanKonteks');
+    }
 
+    public function sejarah($id) {
+        DB::table('konteks_organisasi')
+            ->where('id', $id)
+            ->update(['sejarah' => 1]);
+        return redirect()->route('tetapanKonteks');
+    }
 
 }

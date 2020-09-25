@@ -37,9 +37,9 @@
           </div>
     </div>
     <div class="card-body pt-0">
-        <button id="tambahIsu" class="btn btn-block btn-flat bg-olive mb-2 mt-2" data-toggle="modal" data-target="#tambahModal"><i class="fas fa-plus"></i> Tambah Keluaran Konteks Organisasi Baharu</button>
         <div class="tab-content" id="custom-tabs-two-tabContent">
             <div class="tab-pane fade active show" id="tab-isu">
+            <button id="tambahIsu" class="btn btn-block btn-flat bg-olive mb-2 mt-2" data-toggle="modal" data-target="#tambahModalIsu"><i class="fas fa-plus"></i> Tambah Keluaran Dokumen Isu Baharu</button>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -69,7 +69,7 @@
                         $statusSemakan = "<p class='badge bg-secondary'>TEMPOH SEMAKAN BELUM BERMULA</p>";
                         $tindakanSemakan = "
                             <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</button>
-                            <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
+                            <a href='/konteks_organisasi/sejarah/$isu->id' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
                             <button data-toggle='modal' data-target='#ubahTarikh' data-mula='$mula' data-akhir='$akhir' data-id='$isu->id' data-keluaran='$isu->kod_keluaran' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
                             <a href='/konteks_organisasi/lihat/$isu->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
                         ";
@@ -78,8 +78,8 @@
                             if($statusHantar == 0) { //belum dihantar ke jk
                                     $statusSemakan = "<p class='badge badge bg-success'>TEMPOH SEMAKAN TELAH SELESAI</p>";
                                     $tindakanSemakan = "
-                                        <a href='#' class='btn badge bg-info' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</a>
-                                        <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
+                                        <a href='/konteks_organisasi/hantar/$isu->id' class='btn badge bg-info' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</a>
+                                        <a href='/konteks_organisasi/sejarah/$isu->id' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
                                         <button data-toggle='modal' data-target='#ubahTarikh' data-mula='$mula' data-akhir='$akhir' data-id='$isu->id' data-keluaran='$isu->kod_keluaran' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
                                         <a href='/konteks_organisasi/lihat/$isu->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
                                     ";
@@ -96,7 +96,7 @@
                             $statusSemakan = "<p class='badge badge bg-lime'>TELAH DISAHKAN JK RISIKO</p>";
                             $tindakanSemakan = "
                                 <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</button>
-                                <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
+                                <a href='/konteks_organisasi/sejarah/$isu->id' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
                                 <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
                                 <a href='/konteks_organisasi/lihat/$isu->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
                             ";
@@ -123,7 +123,7 @@
             </table>
         </div>
         <div class="tab-pane fade" id="tab-pihak">
-
+            <button id="tambahPihak" class="btn btn-block btn-flat bg-olive mb-2 mt-2" data-toggle="modal" data-target="#tambahModalPihak"><i class="fas fa-plus"></i> Tambah Keluaran Dokumen Pihak Berkepentingan Baharu</button>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -153,7 +153,7 @@
                         $statusSemakan = "<p class='badge bg-secondary'>TEMPOH SEMAKAN BELUM BERMULA</p>";
                         $tindakanSemakan = "
                             <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</button>
-                            <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
+                            <a href='/konteks_organisasi/sejarah/$pihak->id' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
                             <button data-toggle='modal' data-target='#ubahTarikh' data-mula='$mula' data-akhir='$akhir' data-id='$pihak->id' data-keluaran='$pihak->kod_keluaran' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
                             <a href='/konteks_organisasi/lihat/$pihak->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
                         ";
@@ -162,8 +162,8 @@
                             if($statusHantar == 0) { //belum dihantar ke jk
                                     $statusSemakan = "<p class='badge badge bg-success'>TEMPOH SEMAKAN TELAH SELESAI</p>";
                                     $tindakanSemakan = "
-                                        <a href='#' class='btn badge bg-info' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</a>
-                                        <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
+                                        <a href='/konteks_organisasi/hantar/$pihak->id' class='btn badge bg-info' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</a>
+                                        <a href='/konteks_organisasi/sejarah/$pihak->id' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
                                         <button data-toggle='modal' data-target='#ubahTarikh' data-mula='$mula' data-akhir='$akhir' data-id='$pihak->id' data-keluaran='$pihak->kod_keluaran' class='btn badge bg-warning' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
                                         <a href='/konteks_organisasi/lihat/$pihak->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
                                     ";
@@ -180,7 +180,7 @@
                             $statusSemakan = "<p class='badge badge bg-lime'>TELAH DISAHKAN JK RISIKO</p>";
                             $tindakanSemakan = "
                                 <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-upload'></i> Hantar ke JK</button>
-                                <a href='#' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
+                                <a href='/konteks_organisasi/sejarah/$pihak->id' class='btn badge bg-danger' style='width:120px'><i class='fas fa-save'></i> Simpan Ke Sejarah</a>
                                 <button disabled class='btn badge bg-secondary' style='width:120px'><i class='fas fa-cog'></i> Ubah Tarikh</button>
                                 <a href='/konteks_organisasi/lihat/$pihak->id' class='btn badge bg-primary' style='width:120px'><i class='fas fa-search'></i> Lihat</a>
                             ";
@@ -218,13 +218,13 @@
 <!-- /.content -->
 
 <!-- TAMBAH MODAL --->
-<div class="modal fade" id="tambahModal">
+<div class="modal fade" id="tambahModalIsu">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Tambah Keluaran Konteks Organisasi Baharu</h4>
+        <h4 class="modal-title">Tambah Keluaran Dokumen Isu Baharu</h4>
       </div>
-      <form id="formTambah" method="get" action="/konteks_organisasi/tambah">
+      <form id="formTambahIsu" method="get" action="/konteks_organisasi/tambahIsu">
       <div class="modal-body">
           <div class="form-group">
             <label for="bilangan">Bilangan: </label>
@@ -237,12 +237,38 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>
-        <button type="button" class="btn btn-primary btnTambah">Tambah</button>
+        <button type="button" class="btn btn-primary btnTambahIsu">Tambah</button>
       </div>
       </form>
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="tambahModalPihak">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Tambah Keluaran Dokumen Pihak Berkepentingan Baharu</h4>
+        </div>
+        <form id="formTambahPihak" method="get" action="/konteks_organisasi/tambahPihak">
+        <div class="modal-body">
+            <div class="form-group">
+              <label for="bilangan">Bilangan: </label>
+              <input required class="form-control" type="text" id="bilangan" name="bilangan">
+              <label for="tarikhAwal">Tarikh Semakan Bermula: </label>
+              <input required class="form-control" type="date" id="bermula" name="bermula">
+              <label for="tarikhAkhir">Tarikh Semakan Berakhir: </label>
+              <input required class="form-control" type="date" id="berakhir" name="berakhir">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>
+          <button type="button" class="btn btn-primary btnTambahPihak">Tambah</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
 <div class="modal fade" id="ubahTarikh">
     <div class="modal-dialog">
@@ -287,7 +313,7 @@
                 $("#formUbahTarikh").submit();
             })
         })
-        $('.btnTambah').click(function() {
+        $('.btnTambahIsu').click(function() {
             Swal.fire({
               title: 'Anda pasti ingin menambah keluaran baharu?',
               text: "Keluaran ini disalin daripada keluaran terkini.",
@@ -299,13 +325,44 @@
               cancelButtonText: 'Kembali'
             }).then((result) => {
               if (result.value) {
-                if($("#formTambah")[0].checkValidity()) {
+                if($("#formTambahIsu")[0].checkValidity()) {
                     Swal.fire(
                       'Selesai!',
                       'Keluaran baharu berjaya.',
                       'success'
                     ).then(function () {
-                        $("#formTambah").submit();
+                        $("#formTambahIsu").submit();
+                    })
+                } else {
+                    Swal.fire(
+                      'Gagal!',
+                      'Sila pastikan semua ruangan telah diisi dengan tepat.',
+                      'error'
+                    )
+                }
+              }
+            })
+        })
+
+        $('.btnTambahPihak').click(function() {
+            Swal.fire({
+              title: 'Anda pasti ingin menambah keluaran baharu?',
+              text: "Keluaran ini disalin daripada keluaran terkini.",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ya, saya pasti!',
+              cancelButtonText: 'Kembali'
+            }).then((result) => {
+              if (result.value) {
+                if($("#formTambahPihak")[0].checkValidity()) {
+                    Swal.fire(
+                      'Selesai!',
+                      'Keluaran baharu berjaya.',
+                      'success'
+                    ).then(function () {
+                        $("#formTambahPihak").submit();
                     })
                 } else {
                     Swal.fire(
